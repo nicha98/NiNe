@@ -1,0 +1,85 @@
+# Uncomment the next line to define a global platform for your project
+platform :ios, '9.0'
+
+source 'https://cdn.cocoapods.org/'
+
+target 'SymbolCollisionTest' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Firebase Pods
+    pod 'Firebase', :path => '../'
+    pod 'FirebaseABTesting', :path => '../'
+    pod 'FirebaseAnalytics'
+    pod 'FirebaseAnalyticsInterop', :path => '../'
+    pod 'FirebaseAuth', :path => '../'
+    pod 'FirebaseAuthInterop', :path => '../'
+    pod 'FirebaseCore', :path => '../'
+    pod 'FirebaseCoreDiagnostics', :path => '../'
+    pod 'FirebaseCoreDiagnosticsInterop', :path => '../'
+    pod 'FirebaseCrashlytics', :path => '../'
+    pod 'FirebaseDatabase', :path => '../'
+    pod 'FirebaseDynamicLinks', :path => '../'
+    pod 'FirebaseFirestore', :path => '../'
+    pod 'FirebaseFunctions', :path => '../'
+    pod 'FirebaseInAppMessaging', :path => '../'
+    pod 'FirebaseInstanceID', :path => '../'
+    pod 'FirebaseInstallations', :path => '../'
+    pod 'FirebaseMessaging', :path => '../'
+    pod 'FirebaseMLCommon'
+    pod 'FirebaseMLModelInterpreter'
+    pod 'FirebaseMLVision'
+    pod 'FirebaseMLVisionBarcodeModel'
+    pod 'FirebaseMLVisionFaceModel'
+    pod 'FirebaseMLVisionLabelModel'
+    pod 'FirebaseMLVisionTextModel'
+    pod 'FirebasePerformance'
+    pod 'FirebaseRemoteConfig', :path => '../'
+    pod 'FirebaseStorage', :path => '../'
+    pod 'GoogleDataTransport', :path => '../'
+    pod 'GoogleDataTransportCCTSupport', :path => '../'
+    pod 'GoogleUtilities', :path => '../'
+
+#    pod 'FirebaseUI'. - requires use_frameworks!
+
+  # Other Google Pods
+#    pod 'ARCore' Conflicts with FirebasePerformance via Clearcut and google-cast-sdk
+#    pod 'Blockly' This is a Swift Pod and requires usage of use_frameworks!
+    pod 'Crashlytics'
+    pod 'DigitsMigrationHelper'
+    pod 'EarlGrey'
+#    pod 'GeoFire' -- requires Firebase/Database 4.0
+#    pod 'google-cast-sdk' -- abseil
+    pod 'Google-Mobile-Ads-SDK'
+    pod 'GoogleAnalytics'
+    pod 'GoogleAppIndexing'
+    pod 'GoogleAppUtilities'
+    pod 'GoogleAuthUtilities'
+    pod 'GoogleConversionTracking'
+    pod 'GoogleIDFASupport'
+    pod 'GoogleInterchangeUtilities'
+    pod 'GoogleMaps'
+#    pod 'GoogleMobileVision' # After Firebase 6.8.0, conflicts with FirebaseML
+    pod 'GoogleNetworkingUtilities'
+    pod 'GoogleParsingUtilities'
+    pod 'GooglePlacePicker'
+    pod 'GooglePlaces'
+    pod 'GooglePlusUtilities'
+    pod 'GoogleSignIn'
+    pod 'GoogleSymbolUtilities'
+    pod 'GoogleTagManager'
+    pod 'GoogleToolboxForMac'
+    pod 'GTMAppAuth'
+#    pod 'GTMHTTPFetcher' - conflicts with GTMSessionFetcher
+    pod 'GTMSessionFetcher'
+#    pod 'GVRSDK' -- absl and protobuf duplicates
+    pod 'leveldb-library'
+#    pod 'MDFTextAccessibility' - conflicts with GVRSDK
+    pod 'nanopb'
+#    pod 'NearbyMessages' # - conflicts with google-cast-sdk
+    pod 'Protobuf'
+#    pod 'TensorFlow-experimental' -- conflicts with TensorFlowLiteC
+
+  # Non-Google Pods
+
+end
