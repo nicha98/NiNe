@@ -1,0 +1,21 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'LaunchLatencyTestsApp' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  pod 'Firebase' # , :path => '../..'
+  # pod 'Firebase/InAppMessaging', :path => '../..'
+  # pod 'Firebase/RemoteConfig', :path => '../..'
+  pod 'Firebase/Database'
+  pod 'FirebaseCore' # , :path => '../..'
+  # pod 'FirebaseRemoteConfig', :path => '../..'
+
+  pod 'FirebasePerformance'
+
+  target 'LaunchLatencyTestsAppUITests' do
+    # Pods for testing
+  end
+
+end
