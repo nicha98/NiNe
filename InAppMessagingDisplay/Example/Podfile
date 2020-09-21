@@ -1,0 +1,15 @@
+# Comment the following line to use the CocoaPods master repo instead.
+# Disabled. See https://github.com/firebase/firebase-ios-sdk/issues/3165
+# source 'https://cdn.jsdelivr.net/cocoa/'
+
+use_frameworks!
+
+pod 'FirebaseCore', :path => '../..'
+
+target 'FiamDisplaySwiftExample' do
+  platform :ios, '8.0'
+  pod 'FirebaseInAppMessagingDisplay', :path => '../..'
+  pod 'FirebaseInAppMessaging', :path => '../..'
+  pod 'FirebaseAnalyticsInterop', :path => '../..'
+end
+
