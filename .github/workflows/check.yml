@@ -1,0 +1,22 @@
+name: check
+
+on:
+  pull_request:
+    paths-ignore:
+      - 'Firestore/**'
+
+jobs:
+  check:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: actions/setup-python@v2
+      with:
+        python-version: 3.6
+
+    - name: Setup check
+      run:  scripts/setup_check.sh
+
+    - name: Check
+      run:  scripts/check.sh --test-only
