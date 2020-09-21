@@ -1,0 +1,22 @@
+osx_image: xcode8.3
+language: objective-c
+cache:
+  - bundler
+  - cocoapods
+
+rvm: 2.3.1
+before_install:
+  - open -a "simulator" --args -CurrentDeviceUDID ABBD7191-486B-462F-80B4-AE08C5820DA1
+  - bundle install
+  - gem install xcpretty
+  - bundle exec pod install --project-directory=Example --repo-update
+
+script:
+  - "! git grep ' $'" # Fail on trailing whitespace
+  - ./test.sh
+  - pod lib lint FirebaseCommunity.podspec --verbose | tail -40
+
+branches:
+  only:
+    - master
+
