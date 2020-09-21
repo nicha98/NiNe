@@ -1,0 +1,152 @@
+# Copyright 2017 Google
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Superbuild for Firebase
+
+cmake_minimum_required(VERSION 2.8.11)
+project(firebase C CXX)
+
+list(INSERT CMAKE_MODULE_PATH 0 ${PROJECT_SOURCE_DIR}/cmake)
+include(cc_rules)
+include(external_rules)
+include(podspec_rules)
+include(sanitizer_options)
+
+
+# If no build type is specified, make it a debug build
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Debug)
+endif()
+
+set(FIREBASE_SOURCE_DIR ${PROJECT_SOURCE_DIR})
+set(FIREBASE_BINARY_DIR ${PROJECT_BINARY_DIR})
+set(FIREBASE_INSTALL_DIR ${PROJECT_BINARY_DIR}/opt)
+
+set(
+  FIREBASE_DOWNLOAD_DIR
+  ${PROJECT_BINARY_DIR}/downloads
+  CACHE PATH "Where to store downloaded files"
+)
+
+download_external_sources()
+
+
+# Googletest
+add_external_subdirectory(googletest)
+add_alias(GTest::GTest gtest)
+add_alias(GTest::Main gtest_main)
+add_alias(GMock::GMock gmock)
+
+
+# Abseil-cpp
+add_subdirectory(
+  Firestore/third_party/abseil-cpp
+)
+
+
+# gRPC
+find_package(ZLIB)
+if(ZLIB_FOUND)
+  set(gRPC_ZLIB_PROVIDER package CACHE STRING "Use external ZLIB")
+endif()
+
+set(gRPC_BUILD_TESTS OFF CACHE BOOL "Disable gRPC tests")
+add_external_subdirectory(grpc)
+
+# Fix up targets included by gRPC's build
+set(external_src_dir ${FIREBASE_BINARY_DIR}/external/src)
+add_alias(OpenSSL::Crypto crypto)
+target_include_directories(
+  crypto
+  INTERFACE
+    $<BUILD_INTERFACE:${external_src_dir}/grpc/third_party/boringssl/include>
+)
+
+add_alias(OpenSSL::SSL ssl)
+target_include_directories(
+  ssl
+  INTERFACE
+    $<BUILD_INTERFACE:${external_src_dir}/grpc/third_party/boringssl/include>
+)
+
+add_alias(protobuf::libprotobuf libprotobuf)
+target_compile_options(
+  libprotobuf
+  PUBLIC -Wno-unused-parameter
+)
+
+if(NOT ZLIB_FOUND)
+  target_include_directories(
+    zlibstatic
+    INTERFACE $<BUILD_INTERFACE:${external_src_dir}/grpc/third_party/zlib>
+  )
+endif()
+
+
+# LevelDB
+set(LEVELDB_BUILD_TESTS OFF CACHE BOOL "Firestore disabled")
+set(LEVELDB_BUILD_BENCHMARKS OFF CACHE BOOL "Firestore disabled")
+set(LEVELDB_INSTALL OFF CACHE BOOL "Firestore disabled")
+add_external_subdirectory(leveldb)
+add_alias(LevelDB::LevelDB leveldb)
+
+
+# nanopb
+set(nanopb_BUILD_GENERATOR ON CACHE BOOL "Enable the nanopb generator")
+set(nanopb_PROTOC_PATH ${NANOPB_PROTOC_BIN} CACHE STRING "Protoc location")
+add_external_subdirectory(nanopb)
+
+target_compile_definitions(
+  protobuf-nanopb
+  PUBLIC -DPB_FIELD_16BIT
+)
+
+target_include_directories(
+  protobuf-nanopb
+  INTERFACE $<BUILD_INTERFACE:${external_src_dir}/nanopb>
+)
+
+
+enable_testing()
+include(compiler_setup)
+
+
+# Firebase packages
+podspec_framework(
+  ${FIREBASE_SOURCE_DIR}/GoogleUtilities.podspec
+  SPECS Logger
+)
+
+podspec_framework(${FIREBASE_SOURCE_DIR}/FirebaseCore.podspec)
+
+podspec_framework(${FIREBASE_SOURCE_DIR}/FirebaseAuthInterop.podspec)
+
+if(APPLE)
+  # FirebaseAuthInterop has no source files but CMake can't build frameworks
+  # that don't have sources. Generate an inconsequential source file so that
+  # the library can be linked.
+  file(
+    WRITE ${CMAKE_CURRENT_BINARY_DIR}/FirebaseAuthInteropDummy.c
+    "// generated file for header-only CMake support.
+    __attribute__((unused))
+    static void FirebaseAuthInteropFakeSymbol() {}
+    "
+  )
+  target_sources(
+    FirebaseAuthInterop
+    PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/FirebaseAuthInteropDummy.c
+  )
+endif()
+
+add_subdirectory(Firestore)
