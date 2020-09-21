@@ -1,0 +1,345 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		DE397DCB1FC8AD39007CBF0E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = ED4D5FEB1FBA055300501573 /* GoogleService-Info.plist */; };
+		ED4D5FDD1FBA008200501573 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4D5FDC1FBA008200501573 /* AppDelegate.swift */; };
+		ED4D5FE21FBA008200501573 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED4D5FE01FBA008200501573 /* Main.storyboard */; };
+		ED4D5FE41FBA008200501573 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED4D5FE31FBA008200501573 /* Assets.xcassets */; };
+		ED822C851FBA212600B00A2F /* StorageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED822C841FBA212600B00A2F /* StorageViewController.swift */; };
+		EDFBCF4C1FBB3ACC0041A9FD /* DatabaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFBCF4B1FBB3ACC0041A9FD /* DatabaseViewController.swift */; };
+		EDFBCF511FBC88D20041A9FD /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFBCF501FBC88D20041A9FD /* AuthViewController.swift */; };
+		EDFBCF551FBC95DD0041A9FD /* EmailLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFBCF541FBC95DD0041A9FD /* EmailLoginViewController.swift */; };
+		EDFBCF571FBCD7970041A9FD /* OAuthLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFBCF561FBCD7970041A9FD /* OAuthLoginViewController.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		ED4D5FD91FBA008200501573 /* tvOSSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tvOSSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		ED4D5FDC1FBA008200501573 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		ED4D5FE11FBA008200501573 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		ED4D5FE31FBA008200501573 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		ED4D5FE51FBA008300501573 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ED4D5FEB1FBA055300501573 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		ED822C841FBA212600B00A2F /* StorageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageViewController.swift; sourceTree = "<group>"; };
+		EDFBCF4B1FBB3ACC0041A9FD /* DatabaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseViewController.swift; sourceTree = "<group>"; };
+		EDFBCF501FBC88D20041A9FD /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
+		EDFBCF541FBC95DD0041A9FD /* EmailLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailLoginViewController.swift; sourceTree = "<group>"; };
+		EDFBCF561FBCD7970041A9FD /* OAuthLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthLoginViewController.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		ED4D5FD61FBA008200501573 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		ED4D5FD01FBA008200501573 = {
+			isa = PBXGroup;
+			children = (
+				ED4D5FDB1FBA008200501573 /* tvOSSample */,
+				ED4D5FDA1FBA008200501573 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		ED4D5FDA1FBA008200501573 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				ED4D5FD91FBA008200501573 /* tvOSSample.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		ED4D5FDB1FBA008200501573 /* tvOSSample */ = {
+			isa = PBXGroup;
+			children = (
+				ED4D5FEB1FBA055300501573 /* GoogleService-Info.plist */,
+				ED4D5FDC1FBA008200501573 /* AppDelegate.swift */,
+				ED4D5FE01FBA008200501573 /* Main.storyboard */,
+				ED4D5FE31FBA008200501573 /* Assets.xcassets */,
+				ED4D5FE51FBA008300501573 /* Info.plist */,
+				ED822C841FBA212600B00A2F /* StorageViewController.swift */,
+				EDFBCF581FBCD79F0041A9FD /* Auth */,
+				EDFBCF4B1FBB3ACC0041A9FD /* DatabaseViewController.swift */,
+			);
+			path = tvOSSample;
+			sourceTree = "<group>";
+		};
+		EDFBCF581FBCD79F0041A9FD /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				EDFBCF501FBC88D20041A9FD /* AuthViewController.swift */,
+				EDFBCF541FBC95DD0041A9FD /* EmailLoginViewController.swift */,
+				EDFBCF561FBCD7970041A9FD /* OAuthLoginViewController.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		ED4D5FD81FBA008200501573 /* tvOSSample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ED4D5FE81FBA008300501573 /* Build configuration list for PBXNativeTarget "tvOSSample" */;
+			buildPhases = (
+				ED4D5FD51FBA008200501573 /* Sources */,
+				ED4D5FD61FBA008200501573 /* Frameworks */,
+				ED4D5FD71FBA008200501573 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = tvOSSample;
+			productName = tvOSSample;
+			productReference = ED4D5FD91FBA008200501573 /* tvOSSample.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		ED4D5FD11FBA008200501573 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0910;
+				LastUpgradeCheck = 0910;
+				ORGANIZATIONNAME = Firebase;
+				TargetAttributes = {
+					ED4D5FD81FBA008200501573 = {
+						CreatedOnToolsVersion = 9.1;
+						ProvisioningStyle = Manual;
+					};
+				};
+			};
+			buildConfigurationList = ED4D5FD41FBA008200501573 /* Build configuration list for PBXProject "tvOSSample" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = ED4D5FD01FBA008200501573;
+			productRefGroup = ED4D5FDA1FBA008200501573 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				ED4D5FD81FBA008200501573 /* tvOSSample */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		ED4D5FD71FBA008200501573 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ED4D5FE41FBA008200501573 /* Assets.xcassets in Resources */,
+				ED4D5FE21FBA008200501573 /* Main.storyboard in Resources */,
+				DE397DCB1FC8AD39007CBF0E /* GoogleService-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		ED4D5FD51FBA008200501573 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EDFBCF551FBC95DD0041A9FD /* EmailLoginViewController.swift in Sources */,
+				EDFBCF4C1FBB3ACC0041A9FD /* DatabaseViewController.swift in Sources */,
+				EDFBCF571FBCD7970041A9FD /* OAuthLoginViewController.swift in Sources */,
+				ED4D5FDD1FBA008200501573 /* AppDelegate.swift in Sources */,
+				EDFBCF511FBC88D20041A9FD /* AuthViewController.swift in Sources */,
+				ED822C851FBA212600B00A2F /* StorageViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		ED4D5FE01FBA008200501573 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				ED4D5FE11FBA008200501573 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		ED4D5FE61FBA008300501573 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = appletvos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TVOS_DEPLOYMENT_TARGET = 11.1;
+			};
+			name = Debug;
+		};
+		ED4D5FE71FBA008300501573 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = appletvos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TVOS_DEPLOYMENT_TARGET = 11.1;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		ED4D5FE91FBA008300501573 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = tvOSSample/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.firebase.tvOSSample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = Debug;
+		};
+		ED4D5FEA1FBA008300501573 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = tvOSSample/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.firebase.tvOSSample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		ED4D5FD41FBA008200501573 /* Build configuration list for PBXProject "tvOSSample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ED4D5FE61FBA008300501573 /* Debug */,
+				ED4D5FE71FBA008300501573 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ED4D5FE81FBA008300501573 /* Build configuration list for PBXNativeTarget "tvOSSample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ED4D5FE91FBA008300501573 /* Debug */,
+				ED4D5FEA1FBA008300501573 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = ED4D5FD11FBA008200501573 /* Project object */;
+}
