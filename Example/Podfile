@@ -1,0 +1,124 @@
+
+use_frameworks!
+
+target 'Core_Example_iOS' do
+  platform :ios, '8.0'
+
+  pod 'FirebaseDev/Core', :path => '../'
+
+  target 'Core_Tests_iOS' do
+    inherit! :search_paths
+    pod 'OCMock'
+  end
+end
+
+target 'Core_Example_macOS' do
+  platform :osx, '10.10'
+
+  pod 'FirebaseDev/Core', :path => '../'
+
+  target 'Core_Tests_macOS' do
+    inherit! :search_paths
+    pod 'OCMock'
+  end
+end
+
+target 'Auth_Example_iOS' do
+  platform :ios, '8.0'
+
+  pod 'FirebaseDev/Auth', :path => '../'
+
+  target 'Auth_Tests_iOS' do
+    inherit! :search_paths
+    pod 'OCMock'
+  end
+end
+
+target 'Auth_Example_macOS' do
+  platform :osx, '10.10'
+
+  pod 'FirebaseDev/Auth', :path => '../'
+
+  target 'Auth_Tests_macOS' do
+    inherit! :search_paths
+    pod 'OCMock'
+  end
+end
+
+target 'Database_Example_iOS' do
+  platform :ios, '8.0'
+
+  pod 'FirebaseDev/Database', :path => '../'
+
+  target 'Database_Tests_iOS' do
+    inherit! :search_paths
+    pod 'OCMock'
+  end
+
+  target 'Database_IntegrationTests_iOS' do
+    inherit! :search_paths
+    pod 'OCMock'
+  end
+end
+
+target 'Database_Example_macOS' do
+  platform :osx, '10.10'
+
+  pod 'FirebaseDev/Database', :path => '../'
+
+  target 'Database_Tests_macOS' do
+    inherit! :search_paths
+    pod 'OCMock'
+  end
+
+  target 'Database_IntegrationTests_macOS' do
+    inherit! :search_paths
+    pod 'OCMock'
+  end
+end
+
+target 'Messaging_Example_iOS' do
+  platform :ios, '8.0'
+
+  pod 'FirebaseDev/Messaging', :path => '../'
+  # Lock to the 1.0.9 version of InstanceID since 1.0.10 added a dependency
+  # to FirebaseCore
+  pod 'FirebaseInstanceID', '1.0.9'
+
+  target 'Messaging_Tests_iOS' do
+    inherit! :search_paths
+    pod 'OCMock'
+  end
+end
+
+target 'Storage_Example_iOS' do
+  platform :ios, '8.0'
+
+  pod 'FirebaseDev/Storage', :path => '../'
+
+  target 'Storage_Tests_iOS' do
+    inherit! :search_paths
+    pod 'OCMock'
+  end
+
+  target 'Storage_IntegrationTests_iOS' do
+    inherit! :search_paths
+    pod 'OCMock'
+  end
+end
+
+target 'Storage_Example_macOS' do
+  platform :osx, '10.10'
+
+  pod 'FirebaseDev/Storage', :path => '../'
+
+  target 'Storage_Tests_macOS' do
+    inherit! :search_paths
+    pod 'OCMock'
+  end
+
+  target 'Storage_IntegrationTests_macOS' do
+    inherit! :search_paths
+    pod 'OCMock'
+  end
+end
