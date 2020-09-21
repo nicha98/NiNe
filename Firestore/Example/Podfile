@@ -1,0 +1,69 @@
+# Uncomment the next two lines for pre-release testing on internal repo
+#source 'sso://cpdc-internal/firebase'
+#source 'https://github.com/CocoaPods/Specs.git'
+
+# Uncomment the next two lines for pre-release testing on public repo
+#source 'https://github.com/Firebase/SpecsStaging.git'
+#source 'https://github.com/CocoaPods/Specs.git'
+
+use_frameworks!
+
+target 'Firestore_Example_iOS' do
+  platform :ios, '8.0'
+
+  # The next line is the forcing function for the Firebase pod. The Firebase
+  # version's subspecs should depend on the component versions in their
+  # corresponding podspec's.
+  pod 'Firebase/CoreOnly', '5.18.0'
+
+  pod 'FirebaseAuth', :path => '../../'
+  pod 'FirebaseAuthInterop', :path => '../../'
+  pod 'FirebaseCore', :path => '../../'
+  pod 'GoogleUtilities', :path => '../../'
+  pod 'FirebaseFirestore', :path => '../../'
+
+  target 'Firestore_Tests_iOS' do
+    inherit! :search_paths
+
+    pod 'GoogleTest', :podspec => 'GoogleTest.podspec'
+    pod 'ProtobufCpp', :podspec => 'ProtobufCpp.podspec'
+
+    pod 'OCMock'
+    pod 'leveldb-library'
+  end
+
+  target 'Firestore_Benchmarks_iOS' do
+    inherit! :search_paths
+
+    pod 'GoogleBenchmark', :podspec => 'GoogleBenchmark.podspec'
+  end
+
+  target 'Firestore_IntegrationTests_iOS' do
+    inherit! :search_paths
+
+    pod 'GoogleTest', :podspec => 'GoogleTest.podspec'
+
+    pod 'OCMock'
+    pod 'leveldb-library'
+  end
+
+  target 'Firestore_SwiftTests_iOS' do
+    pod 'FirebaseFirestoreSwift', :path => '../../'
+  end
+
+  target 'Firestore_FuzzTests_iOS' do
+    inherit! :search_paths
+    platform :ios, '9.0'
+
+    pod 'LibFuzzer', :podspec => 'LibFuzzer.podspec'
+    pod '!ProtoCompiler'
+  end
+end
+
+target 'macOS_example' do
+  platform :osx, '10.10'
+
+  pod 'FirebaseAuth', :path => '../../'
+  pod 'FirebaseCore', :path => '../../'
+  pod 'FirebaseFirestore', :path => '../../'
+end
