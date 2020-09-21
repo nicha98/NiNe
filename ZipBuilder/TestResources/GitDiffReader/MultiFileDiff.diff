@@ -1,0 +1,1148 @@
+diff --git a/ZipBuilder/Sources/sem-versions/DiffReader/CodeVersion.swift b/ZipBuilder/Sources/sem-versions/DiffReader/CodeVersion.swift
+new file mode 100644
+index 000000000..bdfd1c9cd
+--- /dev/null
++++ b/ZipBuilder/Sources/sem-versions/DiffReader/CodeVersion.swift
+@@ -0,0 +1,19 @@
++/*
++ * Copyright 2020 Google LLC
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++import Foundation
++
++protocol CodeVersion {}
+diff --git a/ZipBuilder/Sources/sem-versions/DiffReader/Diff.swift b/ZipBuilder/Sources/sem-versions/DiffReader/Diff.swift
+new file mode 100644
+index 000000000..f40625b47
+--- /dev/null
++++ b/ZipBuilder/Sources/sem-versions/DiffReader/Diff.swift
+@@ -0,0 +1,24 @@
++/*
++ * Copyright 2020 Google LLC
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++import Foundation
++
++/// A diff between two code versions
++struct Diff {
++  var createdFiles: [File]
++  var deletedFiles: [File]
++  var modifiedFiles: [File]
++}
+diff --git a/ZipBuilder/Sources/sem-versions/DiffReader/DiffReader.swift b/ZipBuilder/Sources/sem-versions/DiffReader/DiffReader.swift
+new file mode 100644
+index 000000000..6d0ae6c11
+--- /dev/null
++++ b/ZipBuilder/Sources/sem-versions/DiffReader/DiffReader.swift
+@@ -0,0 +1,22 @@
++/*
++ * Copyright 2020 Google LLC
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++import Foundation
++
++protocol DiffReader {
++  func diff(version: CodeVersion, baseVersion: CodeVersion) throws -> Diff
++  func fileDiff(path: Path, version: CodeVersion, baseVersion: CodeVersion) throws -> FileDiff
++}
+diff --git a/ZipBuilder/Sources/sem-versions/DiffReader/File.swift b/ZipBuilder/Sources/sem-versions/DiffReader/File.swift
+new file mode 100644
+index 000000000..e59c1c1d8
+--- /dev/null
++++ b/ZipBuilder/Sources/sem-versions/DiffReader/File.swift
+@@ -0,0 +1,22 @@
++/*
++ * Copyright 2020 Google LLC
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++import Foundation
++
++struct File {
++  var path: Path
++  var diff: FileDiff
++}
+diff --git a/ZipBuilder/Sources/sem-versions/DiffReader/FileDiff.swift b/ZipBuilder/Sources/sem-versions/DiffReader/FileDiff.swift
+new file mode 100644
+index 000000000..1bd629573
+--- /dev/null
++++ b/ZipBuilder/Sources/sem-versions/DiffReader/FileDiff.swift
+@@ -0,0 +1,36 @@
++/*
++ * Copyright 2020 Google LLC
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++import Foundation
++
++struct FileDiff {
++  var oldPath: Path
++  var newPath: Path
++  var lines: [Line]
++}
++
++extension FileDiff {
++  struct Line {
++    enum LineType {
++      case added
++      case removed
++      case unmodified
++    }
++
++    var type: LineType
++    var content: String
++  }
++}
+diff --git a/ZipBuilder/Sources/sem-versions/DiffReader/GitDiffReader/GitCodeVersion.swift b/ZipBuilder/Sources/sem-versions/DiffReader/GitDiffReader/GitCodeVersion.swift
+new file mode 100644
+index 000000000..8bf7cdd76
+--- /dev/null
++++ b/ZipBuilder/Sources/sem-versions/DiffReader/GitDiffReader/GitCodeVersion.swift
+@@ -0,0 +1,21 @@
++/*
++ * Copyright 2020 Google LLC
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++import Foundation
++
++struct GitCodeVersion: CodeVersion {
++  var commitHash: String
++}
+diff --git a/ZipBuilder/Sources/sem-versions/DiffReader/GitDiffReader/GitDiffCommandOutputParser.swift b/ZipBuilder/Sources/sem-versions/DiffReader/GitDiffReader/GitDiffCommandOutputParser.swift
+new file mode 100644
+index 000000000..8c22783d1
+--- /dev/null
++++ b/ZipBuilder/Sources/sem-versions/DiffReader/GitDiffReader/GitDiffCommandOutputParser.swift
+@@ -0,0 +1,219 @@
++/*
++ * Copyright 2020 Google LLC
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++import Foundation
++
++protocol GitDiffCommandOutputParserProtocol {
++  func parseDiff() throws -> Diff
++}
++
++class GitDiffCommandOutputParser: GitDiffCommandOutputParserProtocol {
++  let string: String
++  init(string: String) {
++    self.string = string
++  }
++
++  func parseDiff() throws -> Diff {
++    if #available(OSX 10.15, *) {
++      let scanner = Scanner(string: string)
++      scanner.charactersToBeSkipped = nil
++      _ = try scanner.scanUpToPaths()
++      let (oldPath, newPath) = try scanner.scanPaths()
++
++      // Scan to the first chunk diff.
++      var allDiffLines: [FileDiff.Line] = []
++      while let lines = scanner.scanChunkDiffLines() {
++        allDiffLines += lines
++      }
++
++      let file = File(path: newPath, diff: FileDiff(oldPath: oldPath, newPath: newPath, lines: allDiffLines))
++      return Diff(createdFiles: [], deletedFiles: [], modifiedFiles: [file])
++    } else {
++      throw GitDiffCommandOutputParser.ParserError.unsupportedOSVersion
++    }
++  }
++}
++
++@available(OSX 10.15, *)
++private extension Scanner {
++  func scanUpToPaths() throws -> String {
++    let scanLocation = self.scanLocation
++    guard let result = compatibilityScanUpTo("diff --git a/") else {
++      return ""
++    }
++
++    guard !isAtEnd else {
++      throw GitDiffCommandOutputParser.ParserError
++        .diffStartNotFound(searchStartLocation: scanLocation)
++    }
++
++    return result
++  }
++
++  func scanPaths() throws -> (oldPath: String, newPath: String) {
++    // Expect string like:
++    // `diff --git a/<oldPath> b/<newPath>`
++
++    var scanLocation = self.scanLocation
++    guard scanString("diff --git a/", into: nil) else {
++      throw GitDiffCommandOutputParser.ParserError
++        .diffStartNotFound(searchStartLocation: scanLocation)
++    }
++
++    scanLocation = self.scanLocation
++    guard let oldPath = compatibilityScanUpTo(" b/") else {
++      throw GitDiffCommandOutputParser.ParserError
++        .oldFilePathNotFound(searchStartLocation: scanLocation)
++    }
++
++    // Skip to new path start
++    scanLocation = self.scanLocation
++    guard scanString(" b/", into: nil) else {
++      throw GitDiffCommandOutputParser.ParserError
++        .newFilePathNotFound(searchStartLocation: scanLocation)
++    }
++
++    scanLocation = self.scanLocation
++    guard let newPath = compatibilityScanUpTo("\n") else {
++      throw GitDiffCommandOutputParser.ParserError
++        .newFilePathNotFound(searchStartLocation: scanLocation)
++    }
++
++    return (oldPath, newPath)
++  }
++
++  func scanChunkDiffLines() -> [FileDiff.Line]? {
++    guard let _ = scanUpToChunkSeparator(), let _ = scanChunkSeparator() else {
++      return nil
++    }
++
++    let diffLines = scanUpToChunkSeparator() ?? ""
++    return FileDiff.Line.lines(diffContent: diffLines)
++  }
++
++  func scanUpToChunkSeparator(resultPrefix: String = "") -> String? {
++    // "@@ -<1st_removed_line>,<number_of_removed_lines> +<1st_added_line>,<number_of_added_lines>"
++    // e.g. "@@ -1,5 +1,5 @@"
++
++    let chunkSeparatorPrefix = "@@ -"
++    let result = resultPrefix + (compatibilityScanUpTo(chunkSeparatorPrefix) ?? "")
++
++    guard !isAtEnd else {
++      return result
++    }
++
++    let potentialStartLocation = scanLocation
++
++    guard let _ = scanChunkSeparator() else {
++      scanLocation = potentialStartLocation + chunkSeparatorPrefix.count
++      return scanUpToChunkSeparator(resultPrefix: result + chunkSeparatorPrefix)
++    }
++
++    // Set location to
++    scanLocation = potentialStartLocation
++    return result
++  }
++
++  func scanChunkSeparator()
++    -> (removed: CountableClosedRange<Int>, added: CountableClosedRange<Int>)? {
++    guard
++      let _ = compatibilityScanString("@@ -"),
++      let firstRemovedLine = scanInt(),
++      let _ = compatibilityScanString(","),
++      let removedLineCount = scanInt(),
++      let _ = compatibilityScanString(" +"),
++      let firstAddedLine = scanInt(),
++      let _ = compatibilityScanString(","),
++      let addedLineCount = scanInt(),
++      let suffix = scanUpToCharacters(from: .newlines),
++      let _ = scanCharacters(from: .newlines)
++    else {
++      return nil
++    }
++    return (firstRemovedLine ... firstRemovedLine + removedLineCount,
++            firstAddedLine ... firstAddedLine + addedLineCount)
++  }
++
++  func compatibilityScanUpTo(_ substring: String) -> String? {
++    if #available(OSX 10.15, *) {
++      return scanUpToString(substring)
++    } else {
++      var resultNSString: NSString?
++      guard scanUpTo(substring, into: &resultNSString) else {
++        return nil
++      }
++
++      guard let unwrappedResult = resultNSString else {
++        return nil
++      }
++
++      return String(unwrappedResult)
++    }
++  }
++
++  func compatibilityScanString(_ searchString: String) -> String? {
++    if #available(OSX 10.15, *) {
++      return scanString(searchString)
++    } else {
++      var resultNSString: NSString?
++      guard scanString(searchString, into: &resultNSString) else {
++        return nil
++      }
++
++      guard let unwrappedResult = resultNSString else {
++        return nil
++      }
++
++      return String(unwrappedResult)
++    }
++  }
++}
++
++extension GitDiffCommandOutputParser {
++  enum ParserError: Error {
++    case diffStartNotFound(searchStartLocation: Int)
++    case oldFilePathNotFound(searchStartLocation: Int)
++    case newFilePathNotFound(searchStartLocation: Int)
++    case chunkHeaderNotFound
++    case unsupportedOSVersion
++  }
++}
++
++extension FileDiff.Line {
++  static func lines(diffContent: String, skipUnmodified: Bool = true) -> [FileDiff.Line] {
++    // Expected string:
++    //
++    // /// xcodebuild, etc). Intentionally empty, this enum is used as a namespace.
++    // -internal enum Shell {}
++    // +public enum Shell {}
++    //
++    //  extension Shell {
++
++    return diffContent.split(separator: "\n").compactMap { line in
++      if line.hasPrefix("+") {
++        return FileDiff.Line(type: .added, content: String(line.suffix(line.count - 2)))
++      } else if line.hasPrefix("-") {
++        return FileDiff.Line(type: .removed, content: String(line.suffix(line.count - 2)))
++      } else if line.hasPrefix(" ") {
++        return skipUnmodified ? nil : FileDiff
++          .Line(type: .unmodified, content: String(line.suffix(line.count - 1)))
++      } else {
++        // Actually should never go here.
++        return nil
++      }
++    }
++  }
++}
+diff --git a/ZipBuilder/Sources/sem-versions/DiffReader/GitDiffReader/GitDiffReader.swift b/ZipBuilder/Sources/sem-versions/DiffReader/GitDiffReader/GitDiffReader.swift
+new file mode 100644
+index 000000000..f58243584
+--- /dev/null
++++ b/ZipBuilder/Sources/sem-versions/DiffReader/GitDiffReader/GitDiffReader.swift
+@@ -0,0 +1,35 @@
++/*
++ * Copyright 2020 Google LLC
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++import Foundation
++
++import ShellUtils
++
++class GitDiffReader: DiffReader {
++  func diff(version: CodeVersion, baseVersion: CodeVersion) throws -> Diff {
++    throw DiffReaderError.unknown
++  }
++
++  func fileDiff(path: Path, version: CodeVersion, baseVersion: CodeVersion) throws -> FileDiff {
++    throw DiffReaderError.unknown
++  }
++}
++
++extension GitDiffReader {
++  enum DiffReaderError: Error {
++    case unknown
++  }
++}
+diff --git a/ZipBuilder/TestResources/GitDiffReader/MultiFileDiff.diff b/ZipBuilder/TestResources/GitDiffReader/MultiFileDiff.diff
+new file mode 100644
+index 000000000..bf00a08a3
+--- /dev/null
++++ b/ZipBuilder/TestResources/GitDiffReader/MultiFileDiff.diff
+@@ -0,0 +1,557 @@
++diff --git a/ZipBuilder/Sources/sem-versions/DiffReader/CodeVersion.swift b/ZipBuilder/Sources/sem-versions/DiffReader/CodeVersion.swift
++new file mode 100644
++index 000000000..bdfd1c9cd
++--- /dev/null
+++++ b/ZipBuilder/Sources/sem-versions/DiffReader/CodeVersion.swift
++@@ -0,0 +1,19 @@
+++/*
+++ * Copyright 2020 Google LLC
+++ *
+++ * Licensed under the Apache License, Version 2.0 (the "License");
+++ * you may not use this file except in compliance with the License.
+++ * You may obtain a copy of the License at
+++ *
+++ *      http://www.apache.org/licenses/LICENSE-2.0
+++ *
+++ * Unless required by applicable law or agreed to in writing, software
+++ * distributed under the License is distributed on an "AS IS" BASIS,
+++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+++ * See the License for the specific language governing permissions and
+++ * limitations under the License.
+++ */
+++
+++import Foundation
+++
+++protocol CodeVersion {}
++diff --git a/ZipBuilder/Sources/sem-versions/DiffReader/Diff.swift b/ZipBuilder/Sources/sem-versions/DiffReader/Diff.swift
++new file mode 100644
++index 000000000..f40625b47
++--- /dev/null
+++++ b/ZipBuilder/Sources/sem-versions/DiffReader/Diff.swift
++@@ -0,0 +1,24 @@
+++/*
+++ * Copyright 2020 Google LLC
+++ *
+++ * Licensed under the Apache License, Version 2.0 (the "License");
+++ * you may not use this file except in compliance with the License.
+++ * You may obtain a copy of the License at
+++ *
+++ *      http://www.apache.org/licenses/LICENSE-2.0
+++ *
+++ * Unless required by applicable law or agreed to in writing, software
+++ * distributed under the License is distributed on an "AS IS" BASIS,
+++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+++ * See the License for the specific language governing permissions and
+++ * limitations under the License.
+++ */
+++
+++import Foundation
+++
+++/// A diff between two code versions
+++struct Diff {
+++  var createdFiles: [File]
+++  var deletedFiles: [File]
+++  var modifiedFiles: [File]
+++}
++diff --git a/ZipBuilder/Sources/sem-versions/DiffReader/DiffReader.swift b/ZipBuilder/Sources/sem-versions/DiffReader/DiffReader.swift
++new file mode 100644
++index 000000000..6d0ae6c11
++--- /dev/null
+++++ b/ZipBuilder/Sources/sem-versions/DiffReader/DiffReader.swift
++@@ -0,0 +1,22 @@
+++/*
+++ * Copyright 2020 Google LLC
+++ *
+++ * Licensed under the Apache License, Version 2.0 (the "License");
+++ * you may not use this file except in compliance with the License.
+++ * You may obtain a copy of the License at
+++ *
+++ *      http://www.apache.org/licenses/LICENSE-2.0
+++ *
+++ * Unless required by applicable law or agreed to in writing, software
+++ * distributed under the License is distributed on an "AS IS" BASIS,
+++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+++ * See the License for the specific language governing permissions and
+++ * limitations under the License.
+++ */
+++
+++import Foundation
+++
+++protocol DiffReader {
+++  func diff(version: CodeVersion, baseVersion: CodeVersion) throws -> Diff
+++  func fileDiff(path: Path, version: CodeVersion, baseVersion: CodeVersion) throws -> FileDiff
+++}
++diff --git a/ZipBuilder/Sources/sem-versions/DiffReader/File.swift b/ZipBuilder/Sources/sem-versions/DiffReader/File.swift
++new file mode 100644
++index 000000000..e59c1c1d8
++--- /dev/null
+++++ b/ZipBuilder/Sources/sem-versions/DiffReader/File.swift
++@@ -0,0 +1,22 @@
+++/*
+++ * Copyright 2020 Google LLC
+++ *
+++ * Licensed under the Apache License, Version 2.0 (the "License");
+++ * you may not use this file except in compliance with the License.
+++ * You may obtain a copy of the License at
+++ *
+++ *      http://www.apache.org/licenses/LICENSE-2.0
+++ *
+++ * Unless required by applicable law or agreed to in writing, software
+++ * distributed under the License is distributed on an "AS IS" BASIS,
+++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+++ * See the License for the specific language governing permissions and
+++ * limitations under the License.
+++ */
+++
+++import Foundation
+++
+++struct File {
+++  var path: Path
+++  var diff: FileDiff
+++}
++diff --git a/ZipBuilder/Sources/sem-versions/DiffReader/FileDiff.swift b/ZipBuilder/Sources/sem-versions/DiffReader/FileDiff.swift
++new file mode 100644
++index 000000000..1bd629573
++--- /dev/null
+++++ b/ZipBuilder/Sources/sem-versions/DiffReader/FileDiff.swift
++@@ -0,0 +1,36 @@
+++/*
+++ * Copyright 2020 Google LLC
+++ *
+++ * Licensed under the Apache License, Version 2.0 (the "License");
+++ * you may not use this file except in compliance with the License.
+++ * You may obtain a copy of the License at
+++ *
+++ *      http://www.apache.org/licenses/LICENSE-2.0
+++ *
+++ * Unless required by applicable law or agreed to in writing, software
+++ * distributed under the License is distributed on an "AS IS" BASIS,
+++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+++ * See the License for the specific language governing permissions and
+++ * limitations under the License.
+++ */
+++
+++import Foundation
+++
+++struct FileDiff {
+++  var oldPath: Path
+++  var newPath: Path
+++  var lines: [Line]
+++}
+++
+++extension FileDiff {
+++  struct Line {
+++    enum LineType {
+++      case added
+++      case removed
+++      case unmodified
+++    }
+++
+++    var type: LineType
+++    var content: String
+++  }
+++}
++diff --git a/ZipBuilder/Sources/sem-versions/DiffReader/GitDiffReader/GitCodeVersion.swift b/ZipBuilder/Sources/sem-versions/DiffReader/GitDiffReader/GitCodeVersion.swift
++new file mode 100644
++index 000000000..8bf7cdd76
++--- /dev/null
+++++ b/ZipBuilder/Sources/sem-versions/DiffReader/GitDiffReader/GitCodeVersion.swift
++@@ -0,0 +1,21 @@
+++/*
+++ * Copyright 2020 Google LLC
+++ *
+++ * Licensed under the Apache License, Version 2.0 (the "License");
+++ * you may not use this file except in compliance with the License.
+++ * You may obtain a copy of the License at
+++ *
+++ *      http://www.apache.org/licenses/LICENSE-2.0
+++ *
+++ * Unless required by applicable law or agreed to in writing, software
+++ * distributed under the License is distributed on an "AS IS" BASIS,
+++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+++ * See the License for the specific language governing permissions and
+++ * limitations under the License.
+++ */
+++
+++import Foundation
+++
+++struct GitCodeVersion: CodeVersion {
+++  var commitHash: String
+++}
++diff --git a/ZipBuilder/Sources/sem-versions/DiffReader/GitDiffReader/GitDiffCommandOutputParser.swift b/ZipBuilder/Sources/sem-versions/DiffReader/GitDiffReader/GitDiffCommandOutputParser.swift
++new file mode 100644
++index 000000000..29c0790c4
++--- /dev/null
+++++ b/ZipBuilder/Sources/sem-versions/DiffReader/GitDiffReader/GitDiffCommandOutputParser.swift
++@@ -0,0 +1,218 @@
+++/*
+++ * Copyright 2020 Google LLC
+++ *
+++ * Licensed under the Apache License, Version 2.0 (the "License");
+++ * you may not use this file except in compliance with the License.
+++ * You may obtain a copy of the License at
+++ *
+++ *      http://www.apache.org/licenses/LICENSE-2.0
+++ *
+++ * Unless required by applicable law or agreed to in writing, software
+++ * distributed under the License is distributed on an "AS IS" BASIS,
+++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+++ * See the License for the specific language governing permissions and
+++ * limitations under the License.
+++ */
+++
+++import Foundation
+++
+++protocol GitDiffCommandOutputParserProtocol {
+++  func parseDiff() throws -> FileDiff
+++}
+++
+++class GitDiffCommandOutputParser: GitDiffCommandOutputParserProtocol {
+++  let string: String
+++  init(string: String) {
+++    self.string = string
+++  }
+++
+++  func parseDiff() throws -> FileDiff {
+++    if #available(OSX 10.15, *) {
+++      let scanner = Scanner(string: string)
+++      scanner.charactersToBeSkipped = nil
+++      _ = try scanner.scanUpToPaths()
+++      let (oldPath, newPath) = try scanner.scanPaths()
+++
+++      // Scan to the first chunk diff.
+++      var allDiffLines: [FileDiff.Line] = []
+++      while let lines = scanner.scanChunkDiffLines() {
+++        allDiffLines += lines
+++      }
+++
+++      return FileDiff(oldPath: oldPath, newPath: newPath, lines: allDiffLines)
+++    } else {
+++      throw GitDiffCommandOutputParser.ParserError.unsupportedOSVersion
+++    }
+++  }
+++}
+++
+++@available(OSX 10.15, *)
+++private extension Scanner {
+++  func scanUpToPaths() throws -> String {
+++    let scanLocation = self.scanLocation
+++    guard let result = compatibilityScanUpTo("diff --git a/") else {
+++      return ""
+++    }
+++
+++    guard !isAtEnd else {
+++      throw GitDiffCommandOutputParser.ParserError
+++        .diffStartNotFound(searchStartLocation: scanLocation)
+++    }
+++
+++    return result
+++  }
+++
+++  func scanPaths() throws -> (oldPath: String, newPath: String) {
+++    // Expect string like:
+++    // `diff --git a/<oldPath> b/<newPath>`
+++
+++    var scanLocation = self.scanLocation
+++    guard scanString("diff --git a/", into: nil) else {
+++      throw GitDiffCommandOutputParser.ParserError
+++        .diffStartNotFound(searchStartLocation: scanLocation)
+++    }
+++
+++    scanLocation = self.scanLocation
+++    guard let oldPath = compatibilityScanUpTo(" b/") else {
+++      throw GitDiffCommandOutputParser.ParserError
+++        .oldFilePathNotFound(searchStartLocation: scanLocation)
+++    }
+++
+++    // Skip to new path start
+++    scanLocation = self.scanLocation
+++    guard scanString(" b/", into: nil) else {
+++      throw GitDiffCommandOutputParser.ParserError
+++        .newFilePathNotFound(searchStartLocation: scanLocation)
+++    }
+++
+++    scanLocation = self.scanLocation
+++    guard let newPath = compatibilityScanUpTo("\n") else {
+++      throw GitDiffCommandOutputParser.ParserError
+++        .newFilePathNotFound(searchStartLocation: scanLocation)
+++    }
+++
+++    return (oldPath, newPath)
+++  }
+++
+++  func scanChunkDiffLines() -> [FileDiff.Line]? {
+++    guard let _ = scanUpToChunkSeparator(), let _ = scanChunkSeparator() else {
+++      return nil
+++    }
+++
+++    let diffLines = scanUpToChunkSeparator() ?? ""
+++    return FileDiff.Line.lines(diffContent: diffLines)
+++  }
+++
+++  func scanUpToChunkSeparator(resultPrefix: String = "") -> String? {
+++    // "@@ -<1st_removed_line>,<number_of_removed_lines> +<1st_added_line>,<number_of_added_lines>"
+++    // e.g. "@@ -1,5 +1,5 @@"
+++
+++    let chunkSeparatorPrefix = "@@ -"
+++    let result = resultPrefix + (compatibilityScanUpTo(chunkSeparatorPrefix) ?? "")
+++
+++    guard !isAtEnd else {
+++      return result
+++    }
+++
+++    let potentialStartLocation = scanLocation
+++
+++    guard let _ = scanChunkSeparator() else {
+++      scanLocation = potentialStartLocation + chunkSeparatorPrefix.count
+++      return scanUpToChunkSeparator(resultPrefix: result + chunkSeparatorPrefix)
+++    }
+++
+++    // Set location to
+++    scanLocation = potentialStartLocation
+++    return result
+++  }
+++
+++  func scanChunkSeparator()
+++    -> (removed: CountableClosedRange<Int>, added: CountableClosedRange<Int>)? {
+++    guard
+++      let _ = compatibilityScanString("@@ -"),
+++      let firstRemovedLine = scanInt(),
+++      let _ = compatibilityScanString(","),
+++      let removedLineCount = scanInt(),
+++      let _ = compatibilityScanString(" +"),
+++      let firstAddedLine = scanInt(),
+++      let _ = compatibilityScanString(","),
+++      let addedLineCount = scanInt(),
+++      let suffix = scanUpToCharacters(from: .newlines),
+++      let _ = scanCharacters(from: .newlines)
+++    else {
+++      return nil
+++    }
+++    return (firstRemovedLine ... firstRemovedLine + removedLineCount,
+++            firstAddedLine ... firstAddedLine + addedLineCount)
+++  }
+++
+++  func compatibilityScanUpTo(_ substring: String) -> String? {
+++    if #available(OSX 10.15, *) {
+++      return scanUpToString(substring)
+++    } else {
+++      var resultNSString: NSString?
+++      guard scanUpTo(substring, into: &resultNSString) else {
+++        return nil
+++      }
+++
+++      guard let unwrappedResult = resultNSString else {
+++        return nil
+++      }
+++
+++      return String(unwrappedResult)
+++    }
+++  }
+++
+++  func compatibilityScanString(_ searchString: String) -> String? {
+++    if #available(OSX 10.15, *) {
+++      return scanString(searchString)
+++    } else {
+++      var resultNSString: NSString?
+++      guard scanString(searchString, into: &resultNSString) else {
+++        return nil
+++      }
+++
+++      guard let unwrappedResult = resultNSString else {
+++        return nil
+++      }
+++
+++      return String(unwrappedResult)
+++    }
+++  }
+++}
+++
+++extension GitDiffCommandOutputParser {
+++  enum ParserError: Error {
+++    case diffStartNotFound(searchStartLocation: Int)
+++    case oldFilePathNotFound(searchStartLocation: Int)
+++    case newFilePathNotFound(searchStartLocation: Int)
+++    case chunkHeaderNotFound
+++    case unsupportedOSVersion
+++  }
+++}
+++
+++extension FileDiff.Line {
+++  static func lines(diffContent: String, skipUnmodified: Bool = true) -> [FileDiff.Line] {
+++    // Expected string:
+++    //
+++    // /// xcodebuild, etc). Intentionally empty, this enum is used as a namespace.
+++    // -internal enum Shell {}
+++    // +public enum Shell {}
+++    //
+++    //  extension Shell {
+++
+++    return diffContent.split(separator: "\n").compactMap { line in
+++      if line.hasPrefix("+") {
+++        return FileDiff.Line(type: .added, content: String(line.suffix(line.count - 2)))
+++      } else if line.hasPrefix("-") {
+++        return FileDiff.Line(type: .removed, content: String(line.suffix(line.count - 2)))
+++      } else if line.hasPrefix(" ") {
+++        return skipUnmodified ? nil : FileDiff
+++          .Line(type: .unmodified, content: String(line.suffix(line.count - 1)))
+++      } else {
+++        // Actually should never go here.
+++        return nil
+++      }
+++    }
+++  }
+++}
++diff --git a/ZipBuilder/Sources/sem-versions/DiffReader/GitDiffReader/GitDiffReader.swift b/ZipBuilder/Sources/sem-versions/DiffReader/GitDiffReader/GitDiffReader.swift
++new file mode 100644
++index 000000000..f58243584
++--- /dev/null
+++++ b/ZipBuilder/Sources/sem-versions/DiffReader/GitDiffReader/GitDiffReader.swift
++@@ -0,0 +1,35 @@
+++/*
+++ * Copyright 2020 Google LLC
+++ *
+++ * Licensed under the Apache License, Version 2.0 (the "License");
+++ * you may not use this file except in compliance with the License.
+++ * You may obtain a copy of the License at
+++ *
+++ *      http://www.apache.org/licenses/LICENSE-2.0
+++ *
+++ * Unless required by applicable law or agreed to in writing, software
+++ * distributed under the License is distributed on an "AS IS" BASIS,
+++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+++ * See the License for the specific language governing permissions and
+++ * limitations under the License.
+++ */
+++
+++import Foundation
+++
+++import ShellUtils
+++
+++class GitDiffReader: DiffReader {
+++  func diff(version: CodeVersion, baseVersion: CodeVersion) throws -> Diff {
+++    throw DiffReaderError.unknown
+++  }
+++
+++  func fileDiff(path: Path, version: CodeVersion, baseVersion: CodeVersion) throws -> FileDiff {
+++    throw DiffReaderError.unknown
+++  }
+++}
+++
+++extension GitDiffReader {
+++  enum DiffReaderError: Error {
+++    case unknown
+++  }
+++}
++diff --git a/ZipBuilder/TestResources/GitDiffReader/TestFileDiff.diff b/ZipBuilder/TestResources/GitDiffReader/TestFileDiff.diff
++new file mode 100644
++index 000000000..b48fc41b1
++--- /dev/null
+++++ b/ZipBuilder/TestResources/GitDiffReader/TestFileDiff.diff
++@@ -0,0 +1,55 @@
+++diff --git a/ZipBuilder/Sources/ZipBuilder/ShellUtils.swift b/ZipBuilder/Sources/ShellUtils/ShellUtils.swift
+++similarity index 92%
+++rename from ZipBuilder/Sources/ZipBuilder/ShellUtils.swift
+++rename to ZipBuilder/Sources/ShellUtils/ShellUtils.swift
+++index 59b6a2561..d6b76afae 100644
+++--- a/ZipBuilder/Sources/ZipBuilder/ShellUtils.swift
++++++ b/ZipBuilder/Sources/ShellUtils/ShellUtils.swift
+++@@ -1,5 +1,5 @@
+++ /*
+++- * Copyright 2019 Google
++++ * Copyright 2020 Google LLC
+++  *
+++  * Licensed under the Apache License, Version 2.0 (the "License");
+++  * you may not use this file except in compliance with the License.
+++@@ -19,11 +19,11 @@ import Foundation
+++ /// Convenience function for calling functions in the Shell. This should be used sparingly and only
+++ /// when interacting with tools that can't be accessed directly in Swift (i.e. CocoaPods,
+++ /// xcodebuild, etc). Intentionally empty, this enum is used as a namespace.
+++-internal enum Shell {}
++++public enum Shell {}
+++
+++ extension Shell {
+++   /// A type to represent the result of running a shell command.
+++-  enum Result {
++++  public enum Result {
+++     /// The command was successfully run (based on the output code), with the output string as the
+++     /// associated value.
+++     case success(output: String)
+++@@ -42,12 +42,12 @@ extension Shell {
+++   ///   - outputToConsole: A flag if the command output should be written to the console as well.
+++   ///   - workingDir: An optional working directory to run the shell command in.
+++   /// - Returns: A Result containing output information from the command.
+++-  static func executeCommandFromScript(_ command: String,
+++-                                       outputToConsole: Bool = true,
+++-                                       workingDir: URL? = nil) -> Result {
++++  public static func executeCommandFromScript(_ command: String,
++++                                              outputToConsole: Bool = true,
++++                                              workingDir: URL? = nil) -> Result {
+++     let scriptPath: URL
+++     do {
+++-      let tempScriptsDir = FileManager.default.temporaryDirectory(withName: "temp_scripts")
++++      let tempScriptsDir = URL(fileURLWithPath: NSTemporaryDirectory())
+++       try FileManager.default.createDirectory(at: tempScriptsDir,
+++                                               withIntermediateDirectories: true,
+++                                               attributes: nil)
+++@@ -63,9 +63,6 @@ extension Shell {
+++       \(command)
+++       """
+++       try contents.write(to: scriptPath, atomically: true, encoding: .utf8)
+++-    } catch let FileManager.FileError.failedToCreateDirectory(path, error) {
+++-      fatalError("Could not execute shell command: \(command) - could not create temporary " +
+++-        "script directory at \(path). \(error)")
+++     } catch {
+++       fatalError("Could not execute shell command: \(command) - unexpected error. \(error)")
+++     }
++diff --git a/ZipBuilder/Tests/sem-versionsTests/GitDiffReader/GitDiffCommandOutputParserTests.swift b/ZipBuilder/Tests/sem-versionsTests/GitDiffReader/GitDiffCommandOutputParserTests.swift
++new file mode 100644
++index 000000000..0a56f3e1a
++--- /dev/null
+++++ b/ZipBuilder/Tests/sem-versionsTests/GitDiffReader/GitDiffCommandOutputParserTests.swift
++@@ -0,0 +1,45 @@
+++/*
+++ * Copyright 2020 Google LLC
+++ *
+++ * Licensed under the Apache License, Version 2.0 (the "License");
+++ * you may not use this file except in compliance with the License.
+++ * You may obtain a copy of the License at
+++ *
+++ *      http://www.apache.org/licenses/LICENSE-2.0
+++ *
+++ * Unless required by applicable law or agreed to in writing, software
+++ * distributed under the License is distributed on an "AS IS" BASIS,
+++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+++ * See the License for the specific language governing permissions and
+++ * limitations under the License.
+++ */
+++
+++import Foundation
+++
+++import XCTest
+++import Foundation
+++@testable import sem_versions
+++
+++final class GitDiffCommandOutputParserTests: XCTestCase {
+++  func testSingleFileDiff() {
+++    do {
+++      let diffString =
+++        try String(contentsOfFile: "/Users/mmaksym/Projects/firebase-ios-sdk2/ZipBuilder/TestResources/GitDiffReader/TestFileDiff.diff")
+++
+++      let parser = GitDiffCommandOutputParser(string: diffString)
+++
+++      let fileDiff = try parser.parseDiff()
+++
+++      XCTAssertEqual(fileDiff.oldPath, "ZipBuilder/Sources/ZipBuilder/ShellUtils.swift")
+++      XCTAssertEqual(fileDiff.newPath, "ZipBuilder/Sources/ShellUtils/ShellUtils.swift")
+++
+++      XCTAssertEqual(fileDiff.lines.count, 17)
+++    } catch {
+++      XCTFail("Parse Error: \(error)")
+++    }
+++  }
+++
+++  static var allTests = [
+++    ("testSingleFileDiff", testSingleFileDiff),
+++  ]
+++}
+diff --git a/ZipBuilder/TestResources/GitDiffReader/TestFileDiff.diff b/ZipBuilder/TestResources/GitDiffReader/TestFileDiff.diff
+new file mode 100644
+index 000000000..b48fc41b1
+--- /dev/null
++++ b/ZipBuilder/TestResources/GitDiffReader/TestFileDiff.diff
+@@ -0,0 +1,55 @@
++diff --git a/ZipBuilder/Sources/ZipBuilder/ShellUtils.swift b/ZipBuilder/Sources/ShellUtils/ShellUtils.swift
++similarity index 92%
++rename from ZipBuilder/Sources/ZipBuilder/ShellUtils.swift
++rename to ZipBuilder/Sources/ShellUtils/ShellUtils.swift
++index 59b6a2561..d6b76afae 100644
++--- a/ZipBuilder/Sources/ZipBuilder/ShellUtils.swift
+++++ b/ZipBuilder/Sources/ShellUtils/ShellUtils.swift
++@@ -1,5 +1,5 @@
++ /*
++- * Copyright 2019 Google
+++ * Copyright 2020 Google LLC
++  *
++  * Licensed under the Apache License, Version 2.0 (the "License");
++  * you may not use this file except in compliance with the License.
++@@ -19,11 +19,11 @@ import Foundation
++ /// Convenience function for calling functions in the Shell. This should be used sparingly and only
++ /// when interacting with tools that can't be accessed directly in Swift (i.e. CocoaPods,
++ /// xcodebuild, etc). Intentionally empty, this enum is used as a namespace.
++-internal enum Shell {}
+++public enum Shell {}
++
++ extension Shell {
++   /// A type to represent the result of running a shell command.
++-  enum Result {
+++  public enum Result {
++     /// The command was successfully run (based on the output code), with the output string as the
++     /// associated value.
++     case success(output: String)
++@@ -42,12 +42,12 @@ extension Shell {
++   ///   - outputToConsole: A flag if the command output should be written to the console as well.
++   ///   - workingDir: An optional working directory to run the shell command in.
++   /// - Returns: A Result containing output information from the command.
++-  static func executeCommandFromScript(_ command: String,
++-                                       outputToConsole: Bool = true,
++-                                       workingDir: URL? = nil) -> Result {
+++  public static func executeCommandFromScript(_ command: String,
+++                                              outputToConsole: Bool = true,
+++                                              workingDir: URL? = nil) -> Result {
++     let scriptPath: URL
++     do {
++-      let tempScriptsDir = FileManager.default.temporaryDirectory(withName: "temp_scripts")
+++      let tempScriptsDir = URL(fileURLWithPath: NSTemporaryDirectory())
++       try FileManager.default.createDirectory(at: tempScriptsDir,
++                                               withIntermediateDirectories: true,
++                                               attributes: nil)
++@@ -63,9 +63,6 @@ extension Shell {
++       \(command)
++       """
++       try contents.write(to: scriptPath, atomically: true, encoding: .utf8)
++-    } catch let FileManager.FileError.failedToCreateDirectory(path, error) {
++-      fatalError("Could not execute shell command: \(command) - could not create temporary " +
++-        "script directory at \(path). \(error)")
++     } catch {
++       fatalError("Could not execute shell command: \(command) - unexpected error. \(error)")
++     }
+diff --git a/ZipBuilder/Tests/sem-versionsTests/GitDiffReader/GitDiffCommandOutputParserTests.swift b/ZipBuilder/Tests/sem-versionsTests/GitDiffReader/GitDiffCommandOutputParserTests.swift
+new file mode 100644
+index 000000000..e32c4c68f
+--- /dev/null
++++ b/ZipBuilder/Tests/sem-versionsTests/GitDiffReader/GitDiffCommandOutputParserTests.swift
+@@ -0,0 +1,72 @@
++/*
++ * Copyright 2020 Google LLC
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++import Foundation
++
++import XCTest
++import Foundation
++@testable import sem_versions
++
++final class GitDiffCommandOutputParserTests: XCTestCase {
++  func testSingleFileDiff() {
++    do {
++      let diffString =
++        try String(contentsOfFile: "/Users/mmaksym/Projects/firebase-ios-sdk2/ZipBuilder/TestResources/GitDiffReader/TestFileDiff.diff")
++
++      let parser = GitDiffCommandOutputParser(string: diffString)
++
++      let diff = try parser.parseDiff()
++      XCTAssert(diff.createdFiles.isEmpty)
++      XCTAssert(diff.createdFiles.isEmpty)
++      XCTAssertEqual(diff.modifiedFiles.count, 1)
++      guard let file = diff.modifiedFiles.first else {
++        XCTFail("Missing modified file diff.")
++        return
++      }
++
++      XCTAssertEqual(file.diff.oldPath, "ZipBuilder/Sources/ZipBuilder/ShellUtils.swift")
++      XCTAssertEqual(file.diff.newPath, "ZipBuilder/Sources/ShellUtils/ShellUtils.swift")
++
++      XCTAssertEqual(file.diff.lines.count, 17)
++    } catch {
++      XCTFail("Parse Error: \(error)")
++    }
++  }
++
++  func testMultiFileDiff() {
++//    do {
++//        let diffString =
++//          try String(contentsOfFile: "/Users/mmaksym/Projects/firebase-ios-sdk2/ZipBuilder/TestResources/GitDiffReader/MultiFileDiff.diff")
++//
++//        let parser = GitDiffCommandOutputParser(string: diffString)
++//
++//        let fileDiff = try parser.parseDiff()
++//
++////        XCTAssertEqual(fileDiff.oldPath, "ZipBuilder/Sources/ZipBuilder/ShellUtils.swift")
++////        XCTAssertEqual(fileDiff.newPath, "ZipBuilder/Sources/ShellUtils/ShellUtils.swift")
++////
++////        XCTAssertEqual(fileDiff.lines.count, 17)
++//      } catch {
++//        XCTFail("Parse Error: \(error)")
++//      }
++//    }
++  }
++
++  static var allTests = [
++    ("testSingleFileDiff", testSingleFileDiff),
++    ("testMultiFileDiff", testMultiFileDiff)
++  ]
++}
